@@ -1,6 +1,6 @@
 # Fibonacci Calculator
 
-Fibonacci Calculator implemented as an over-the-top multi-container Docker application with React, NodeJS, Express, AWS RDS (Postgres), Redis and Travis CI
+Fibonacci Calculator implemented as an over-the-top multi-container Docker application with React, NodeJS, Express, Redis, Postgres, AWS Elastic Beanstalk and Travis CI
 
 ## Development
 
@@ -27,5 +27,11 @@ NOTE: Use the -it flag when running React apps
 http://localhost:3050
 
 NOTE: you can change the port in the docker-compose.yml file under nginx -> ports
+
+## CI/CD - Travis CI
+
+### Setup
+
+Replace the container tags in .travis.yml from erinkelsey/[name] to your Docker Hub username
 
 ## Production

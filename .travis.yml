@@ -1,0 +1,28 @@
+language: generic
+
+services:
+  - docker
+
+# build test/dev version to run tests
+# use client/Dockerfile.dev to build with build context ./client
+before_install:
+  - docker build -t temp_container -f ./client/Dockerfile.dev ./client
+
+# -- --coverage to make sure npm run test exits
+script:
+  - docker run -e CI=true temp_container npm run test -- --coverage
+
+after_success:
+  - docker build -t erinkelsey/temp-client ./client
+  - docker build -t erinkelsey/temp-nginx ./nginx
+  - docker build -t erinkelsey/temp-server ./server
+  - docker build -t erinkelsey/temp-worker ./worker
+
+  # Log in to Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Take those images and push to Docker Hub
+  - docker push erinkelsey/temp-client
+  - docker push erinkelsey/temp-nginx
+  - docker push erinkelsey/temp-server
+  - docker push erinkelsey/temp-worker
