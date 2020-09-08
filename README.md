@@ -22,4 +22,10 @@ NOTE: Use the -it flag when running React apps
 
     $ docker-compose down  && docker-compose up --build
 
+### Access Client
+
+http://localhost:3050
+
+NOTE: you can change the port in the docker-compose.yml file under nginx -> ports
+
 ## Production
