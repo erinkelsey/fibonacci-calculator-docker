@@ -3,7 +3,7 @@ import axios from "axios";
 
 class Fibonacci extends Component {
   state = {
-    seenIndicies: [],
+    seenIndexes: [],
     values: {},
     index: "",
   };
@@ -19,9 +19,9 @@ class Fibonacci extends Component {
   }
 
   async fetchIndexes() {
-    const seenIndicies = await axios.get("/api/values/all");
+    const seenIndexes = await axios.get("/api/values/all");
     this.setState({
-      seenIndicies: seenIndicies.data,
+      seenIndexes: seenIndexes.data,
     });
   }
 
@@ -33,10 +33,12 @@ class Fibonacci extends Component {
     });
 
     this.setState({ index: "" });
+    this.fetchValues();
+    this.fetchIndexes();
   };
 
-  renderseenIndicies() {
-    return this.state.seenIndicies.map(({ number }) => number).join(", ");
+  renderSeenIndexes() {
+    return this.state.seenIndexes.map(({ number }) => number).join(", ");
   }
 
   renderValues() {
@@ -49,6 +51,8 @@ class Fibonacci extends Component {
         </div>
       );
     }
+
+    return entries;
   }
 
   render() {
@@ -64,7 +68,7 @@ class Fibonacci extends Component {
         </form>
 
         <h3>Indexes I have seen:</h3>
-        {this.renderseenIndicies()}
+        {this.renderSeenIndexes()}
 
         <h3>Calculated Values:</h3>
         {this.renderValues()}

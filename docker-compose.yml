@@ -7,16 +7,18 @@ services:
   redis:
     image: "redis:latest"
   nginx:
+    depends_on:
+      - api
+      - client
     restart: always
     build:
       dockerfile: Dockerfile.dev
       context: ./nginx
     ports:
-      - "3000:80"
-    depends_on:
-      - api
-      - client
+      - "3050:80"
   api:
+    depends_on:
+      - postgres
     build:
       dockerfile: Dockerfile.dev
       context: ./server
@@ -44,6 +46,10 @@ services:
       - /app/node_modules
       - ./client:/app
   worker:
+    environment:
+      # '-' means array element
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     build:
       dockerfile: Dockerfile.dev
       context: ./worker
