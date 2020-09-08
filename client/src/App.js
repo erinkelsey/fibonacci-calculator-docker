@@ -9,11 +9,14 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <header className="App-header">
+        <header>
           <img src={logo} className="App-logo" alt="logo" />
         </header>
         <Link to="/">Home</Link>
+        <br />
         <Link to="/otherpage">Other Page</Link>
+        <br />
+        <br />
         <div>
           <Route exact path="/" component={Fibonacci} />
           <Route path="/otherpage" component={OtherPage} />
