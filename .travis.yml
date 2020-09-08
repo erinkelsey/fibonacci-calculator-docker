@@ -13,16 +13,29 @@ script:
   - docker run -e CI=true temp_container npm run test -- --coverage
 
 after_success:
-  - docker build -t erinkelsey/temp-client ./client
-  - docker build -t erinkelsey/temp-nginx ./nginx
-  - docker build -t erinkelsey/temp-server ./server
-  - docker build -t erinkelsey/temp-worker ./worker
+  - docker build -t $DOCKER_ID/multi-client ./client
+  - docker build -t $DOCKER_ID/multi-nginx ./nginx
+  - docker build -t $DOCKER_ID/multi-server ./server
+  - docker build -t $DOCKER_ID/multi-worker ./worker
 
   # Log in to Docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
   # Take those images and push to Docker Hub
-  - docker push erinkelsey/temp-client
-  - docker push erinkelsey/temp-nginx
-  - docker push erinkelsey/temp-server
-  - docker push erinkelsey/temp-worker
+  - docker push $DOCKER_ID/multi-client
+  - docker push $DOCKER_ID/multi-nginx
+  - docker push $DOCKER_ID/multi-server
+  - docker push $DOCKER_ID/multi-worker
+
+deploy:
+  edge: true
+  provider: elasticbeanstalk
+  region: $AWS_REGION
+  app: $AWS_APP_NAME
+  env: $AWS_ENV_NAME
+  bucket_name: $AWS_BUCKET_NAME
+  bucket_path: $AWS_BUCKET_PATH
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
